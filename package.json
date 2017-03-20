@@ -1,0 +1,35 @@
+{
+  "name": "file-pair",
+  "main": "main",
+  "version": "0.0.0",
+  "keywords": [],
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "tape": "^4.6.3"
+  },
+  "repository": "https://github.com/mihirgogate/file-pair",
+  "configSchema": {
+   "suffixes": {
+     "description": "Suffixes that indicate a test file (without the file extension)",
+     "type": "array",
+     "items": {
+       "type": "string"
+     },
+     "default": ["_test", "-test"],
+     "uniqueItems": true
+   },
+   "directoryReplacements": {
+     "description": "For each directory pair we replace original with replacement to get the paired file path",
+     "type": "array",
+     "items": {
+       "type": "string"
+     },
+     "default": ["lib:lib/test", "another-lib/another-test"],
+     "uniqueItems": true
+   }
+  }
+}
