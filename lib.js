@@ -36,6 +36,34 @@ module.exports = {
 
     return cb("No pair files found. Following candidates considered - {candidates}".replace("{candidates}", JSON.stringify(candidates))
     );
+  },
+
+  getNextPaneId: function(currentPaneId, allPaneIds) {
+      if (!allPaneIds || !Array.isArray(allPaneIds) || allPaneIds.length === 0) {
+        throw Error({
+          msg: "allPaneIds should be a non zero length list",
+          allPaneIds: allPaneIds,
+          toString: function() {
+            return JSON.stringify(this);
+          }
+        });
+      }
+      if (allPaneIds.length == 1) {
+        return null;
+      }
+      var currentPaneIndex = allPaneIds.indexOf(currentPaneId);
+      if (currentPaneIndex == -1) {
+        throw Error({
+          msg: "current pane id not found in list of all pane ids",
+          currentPaneId: currentPaneId,
+          allPaneIds: allPaneIds,
+          toString: function() {
+            return JSON.stringify(this);
+          }
+        });
+      }
+      nextPaneIndex = (currentPaneIndex + 1) % allPaneIds.length;
+      return allPaneIds[nextPaneIndex];
   }
 };
 

@@ -19,10 +19,13 @@ export default {
       if(err) {
         atom.notifications.addError(err);
       } else {
+        var panes = atom.workspace.getPanes();
         var activePane = atom.workspace.getActivePane();
-        var splitPane = activePane.splitRight();
+        var allPaneIds = _getAllPaneIds(panes);
+        var nextPaneId = lib.getNextPaneId(activePane.id, allPaneIds);
+        var pairedPane = _getPairedPane(nextPaneId, panes, activePane);
+        pairedPane.activate()
         atom.workspace.open(filePath);
-        splitPane.activate()
       }
     });
   },
@@ -41,3 +44,21 @@ export default {
   },
 
 };
+
+function _getPairedPane(nextPaneId, panes, activePane) {
+    if (nextPaneId == null) {
+      return activePane.splitRight();
+    }
+    for (var i = 0; i < panes.length; i++) {
+      if (panes[i].id == nextPaneId) {
+        return panes[i];
+      }
+    }
+    throw Error("nextPaneId " + nextPaneId + " is not in the list of open panes");
+}
+
+function _getAllPaneIds(panes) {
+  var allPaneIds = [];
+  panes.forEach(function _getId(pane) { allPaneIds.push(pane.id) });
+  return allPaneIds;
+}
